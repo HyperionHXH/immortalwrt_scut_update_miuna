@@ -33,6 +33,7 @@ jobs:
       
 
     strategy:
+      fail-fast: false
       matrix:
         include:
           - build_variant: mt7981-ax3000
@@ -99,14 +100,13 @@ jobs:
       - name: Make Download
         run: |
           cd openwrt
-          make download -j50
+          timeout 30m make download -j8 || timeout 20m make download -j1 V=s
 
       - name: Compile
         id: compileopenwrt
-        continue-on-error: true
         run: |
           cd openwrt
-          make -j$(nproc) || make -j1 V=s
+          timeout 4h make -j$(nproc) || timeout 2h make -j1 V=s
 
       - name: Package
         run: |

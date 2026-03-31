@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e -o pipefail
 sed -i '1i src-git kenzo https://github.com/kenzok8/openwrt-packages' feeds.conf.default
 sed -i '2i src-git small https://github.com/kenzok8/small' feeds.conf.default
 
@@ -30,4 +31,3 @@ sed -i "s/option command '\/bin\/login'/option command '\/bin\/login -f root'/" 
 
 
 sed  -i "s/exit 0/[ ! -f '\/usr\/sbin\/trojan' ] \&\& [ -f '\/usr\/bin\/trojan-go' ] \&\& ln -sf \/usr\/bin\/trojan-go \/usr\/bin\/trojan\nexit 0/" package/emortal/default-settings/files/99-default-settings                
-
