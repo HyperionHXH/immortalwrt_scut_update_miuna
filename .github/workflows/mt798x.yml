@@ -100,13 +100,25 @@ jobs:
       - name: Make Download
         run: |
           cd openwrt
-          timeout 30m make download -j8 || timeout 20m make download -j1 V=s
+          timeout 30m make download -j8 || {
+            echo "Download failed with -j8, retrying with -j1 V=s..."
+            timeout 20m make download -j1 V=s || {
+              echo "Download failed after retry" >&2
+              exit 1
+            }
+          }
 
       - name: Compile
         id: compileopenwrt
         run: |
           cd openwrt
-          timeout 4h make -j$(nproc) || timeout 2h make -j1 V=s
+          timeout 4h make -j$(nproc) || {
+            echo "Parallel compile failed or timed out, retrying serial build..."
+            timeout 2h make -j1 V=s || {
+              echo "Compile failed after retry" >&2
+              exit 1
+            }
+          }
 
       - name: Package
         run: |
