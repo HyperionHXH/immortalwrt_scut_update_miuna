@@ -14,7 +14,7 @@ on:
   push:
     branches:
       - main
-      - copilot/**
+      - copilot/fix-action-error
   pull_request:
     branches: [ "main" ]
 
