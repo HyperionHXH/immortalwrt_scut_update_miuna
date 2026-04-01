@@ -49,15 +49,14 @@ jobs:
             platform: mt7986
 
         
-    if: github.event.repository.owner.id == github.event.sender.id
-
     steps:
       - name: Maximize build space
         uses: easimon/maximize-build-space@v8
         with:
           swap-size-mb: 512
           temp-reserve-mb: 128
-          root-reserve-mb: 3072
+          # Keep smaller root reserve to leave more free space for large apt dependency install.
+          root-reserve-mb: 1024
           remove-dotnet: 'true'
           remove-android: 'true'
           remove-haskell: 'true'
@@ -69,7 +68,7 @@ jobs:
           DEBIAN_FRONTEND: noninteractive
         run: |
           sudo apt update -y
-          sudo apt install -y ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
+          sudo apt install -y --no-install-recommends ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
           bzip2 ccache clang clangd cmake cpio curl device-tree-compiler ecj fastjar flex gawk gettext gcc-multilib \
           g++-multilib git gperf haveged help2man intltool lib32gcc-s1 libc6-dev-i386 libelf-dev libglib2.0-dev \
           libgmp3-dev libltdl-dev libmpc-dev libmpfr-dev libncurses5-dev libncursesw5 libncursesw5-dev libreadline-dev \
