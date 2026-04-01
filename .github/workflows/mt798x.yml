@@ -11,10 +11,8 @@ env:
 # Controls when the workflow will run
 on:
   # Triggers the workflow on push or pull request events but only for the "main" branch
-  push:
-    branches:
-      - main
-      - copilot/fix-action-error
+  # push:
+  #   branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -57,6 +55,7 @@ jobs:
         with:
           swap-size-mb: 512
           temp-reserve-mb: 128
+          # Keep smaller root reserve to leave more free space for large apt dependency install.
           root-reserve-mb: 1024
           remove-dotnet: 'true'
           remove-android: 'true'
