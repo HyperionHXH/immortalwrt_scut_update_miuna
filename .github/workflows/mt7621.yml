@@ -52,7 +52,7 @@ jobs:
         uses: easimon/maximize-build-space@v8
         with:
           swap-size-mb: 512
-          temp-reserve-mb: 128
+          temp-reserve-mb: 1
           # Keep smaller root reserve to leave more free space for large apt dependency install.
           root-reserve-mb: 128
           remove-dotnet: 'true'
