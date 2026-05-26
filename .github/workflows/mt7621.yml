@@ -33,6 +33,7 @@ jobs:
       type: ${{ matrix.type }}
 
     strategy:
+      fail-fast: false
       matrix:
         include:
           - build_variant: mt7621-mini
@@ -98,14 +99,25 @@ jobs:
       - name: Make Download
         run: |
           cd openwrt
-          make download -j50
+          timeout 30m make download -j8 || {
+            echo "Download failed with -j8, retrying with -j1 V=s..."
+            timeout 20m make download -j1 V=s || {
+              echo "Download failed after retry" >&2
+              exit 1
+            }
+          }
 
       - name: Compile
         id: compileopenwrt
-        continue-on-error: true
         run: |
           cd openwrt
-          make -j$(nproc) || make -j1 V=s
+          timeout 4h make -j$(nproc) || {
+            echo "Parallel compile failed or timed out, retrying serial build..."
+            timeout 2h make -j1 V=s || {
+              echo "Compile failed after retry" >&2
+              exit 1
+            }
+          }
 
       - name: Package
         run: |
