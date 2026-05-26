@@ -17,10 +17,6 @@ git clone https://github.com/hanwckf/luci-app-scutclient.git feeds/luci/applicat
 mkdir -p package/scut-unicom
 wget --tries=5 --timeout=30 https://raw.githubusercontent.com/wykdg/route_script/master/scut-unicom/Makefile -O package/scut-unicom/Makefile
 
-# Clone openwrt-frp
-rm -rf feeds/packages/net/frp
-git clone https://github.com/kuoruan/openwrt-frp.git package/frp
-
 ./scripts/feeds install -a
 
 #在启动项加入联通加速
