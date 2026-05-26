@@ -54,7 +54,7 @@ jobs:
           swap-size-mb: 512
           temp-reserve-mb: 128
           # Keep smaller root reserve to leave more free space for large apt dependency install.
-          root-reserve-mb: 512
+          root-reserve-mb: 128
           remove-dotnet: 'true'
           remove-android: 'true'
           remove-haskell: 'true'
@@ -65,6 +65,8 @@ jobs:
         env:
           DEBIAN_FRONTEND: noninteractive
         run: |
+          sudo apt clean
+          sudo rm -rf /var/lib/apt/lists/*
           sudo apt update -y
           sudo apt install -y --no-install-recommends ack antlr3 asciidoc autoconf automake autopoint binutils bison build-essential \
           bzip2 ccache clang clangd cmake cpio curl device-tree-compiler ecj fastjar flex gawk gettext gcc-multilib \
