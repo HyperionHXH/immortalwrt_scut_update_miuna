@@ -20,6 +20,8 @@ wget --tries=5 --timeout=30 https://raw.githubusercontent.com/wykdg/route_script
 # Clone passwall (main branch has iptables/nftables dual support)
 git clone --depth=1 https://github.com/Openwrt-Passwall/openwrt-passwall.git package/passwall
 git clone --depth=1 https://github.com/Openwrt-Passwall/openwrt-passwall-packages.git package/passwall-packages
+# geoview requires Go 1.25+ which openwrt-21.02 doesn't have
+rm -rf package/passwall-packages/geoview
 
 ./scripts/feeds install -a
 
